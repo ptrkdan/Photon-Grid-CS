@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Photon_Grid_Port.CS_Files
@@ -22,7 +18,7 @@ namespace Photon_Grid_Port.CS_Files
 	public static int wallWidth;
 	public static int numberOfObjects;
 	//constructor
-	Board(){
+	public Board(){
 		size = 200000;
 		maxPlayers = 2;
 		vehicleLength = 3;
@@ -37,7 +33,7 @@ namespace Photon_Grid_Port.CS_Files
 	
 	//member functions
 	
-	public void startgame(){   // may be unnecessary depending on our implementation
+	public void startGame(){   // may be unnecessary depending on our implementation
 		if(checkReady())
 		{
 			
@@ -55,16 +51,14 @@ namespace Photon_Grid_Port.CS_Files
 		}
 	}
 	
-	public bool gameover(){
-		if(alivePlayers.size() == 0)
-		{
+	public bool gameOver(){
+		if (alivePlayers.Count == 0)
 			return true;
-		}
-		else return false;
+		else 
+            return false;
 	}
-        
-      
-	public void preparegame()
+              
+	public void prepareGame()
 	{
 		ready = 0;
 		Player temp = null;
@@ -77,10 +71,10 @@ namespace Photon_Grid_Port.CS_Files
 			Debug.WriteLine(temp.getId());
 			//tempV = createSetVehicle(temp.getId(), (int)(Math.random()*360), new Position((int)(Math.random()*size),(int)(Math.random()*size)), 10, 10);
 			tempV = createSetVehicle(temp.getId(), (i)*180, new Position(2000*(i+1), 2500), 10, 10);
-			Debug.WriteLine("direction is: " + i*180);
-			Debug.WriteLine(tempV.getplayerId());
-			vehicleList.add(tempV);  // random directions and position for now
-			objectsOnBoard.insertVehicle(new VehiclePos(tempV.getplayerId(), tempV.getDirection(), tempV.getPosition(), null), objectsOnBoard.getRoot());
+			//Debug.WriteLine("direction is: " + i*180);
+			//Debug.WriteLine(tempV.getplayerId());
+			vehicleList.Add(tempV);  // random directions and position for now
+			objectsOnBoard.insertVehicle(new VehiclePos(tempV.getPlayerId(), tempV.getDirection(), tempV.getPosition(), null), objectsOnBoard.getRoot());
 			numberOfObjects++;
 			objectsOnBoard.setNumberOfObjects(numberOfObjects);
 			if(i == maxPlayers-1)  // this needs many more checks for security purposes
@@ -102,36 +96,30 @@ namespace Photon_Grid_Port.CS_Files
 	}
 	
 	
-	public void updateBoard(Boolean addWall) throws InterruptedException
+	public void updateBoard(bool addWall) // throws InterruptedException
 	{
 		// this method will update the QuadTree structure after placing new walls and moving vehicles
 		
 		// First, each vehicle needs to move once
-		Iterator<Vehicle> it = vehicleList.iterator();
-		Vehicle tempV = null;
-		for(int i = 0; i < vehicleList.size(); i++)
+        foreach (Vehicle vehicle in vehicleList)        
 		{
-				tempV = it.next();
-                                if(tempV.isAlive())
-                                {
-                                    //System.out.println("" + tempV.getPosition().x + " " + tempV.getPosition().y);
-                                    tempV.setPrevPosition(tempV.getPosition());
-                                    tempV.setNewPosition();
-                                    //System.out.println("" + tempV.getPosition().x + " " + tempV.getPosition().y);
-                                }
+            if(vehicle.isAlive())
+            {
+                //System.out.println("" + tempV.getPosition().x + " " + tempV.getPosition().y);
+                vehicle.setPrevPosition(vehicle.getPosition());
+                vehicle.setNewPosition();
+                //System.out.println("" + tempV.getPosition().x + " " + tempV.getPosition().y);
+            }
 				
 		}		
 		// Next, update QuadTree with new position of vehicle, which will automatically check for collisions
-		it = vehicleList.iterator();
-		tempV = null;
-		for(int i = 0; i < vehicleList.size(); i++)
+        foreach (Vehicle vehicle in vehicleList) 
 		{
-                    tempV = it.next();
-                    if(tempV.isAlive())
-                    {
-			objectsOnBoard.insertVehicle(new VehiclePos(tempV.getplayerId(), tempV.getDirection(), tempV.getPosition(), tempV.getPrevPosition()), objectsOnBoard.getRoot()); 
-			 // inserting a Vehicle should also delete it's old position from the QuadTree.  This is taken care of by the method.
-                    }
+            if (vehicle.isAlive())
+            {
+                objectsOnBoard.insertVehicle(new VehiclePos(vehicle.getPlayerId(), vehicle.getDirection(), vehicle.getPosition(), vehicle.getPrevPosition()), objectsOnBoard.getRoot()); 
+			        // inserting a Vehicle should also delete it's old position from the QuadTree.  This is taken care of by the method.
+            }
 		}
 		
 		//Thread.sleep(10);
@@ -139,17 +127,14 @@ namespace Photon_Grid_Port.CS_Files
 		if(addWall)
 		{
 			// Third, each vehicle needs to make a new wall and update the QuadTree with the new wall; the QuadTree will automatically check for collisions
-			it = vehicleList.iterator();
-	                tempV = null;
-			for(int i = 0; i < vehicleList.size(); i++)
+            foreach (Vehicle vehicle in vehicleList)
 			{
-	                        tempV = it.next();
-	                        if(tempV.isAlive())
-	                        {
-	                            objectsOnBoard.insertWall(tempV.produceWall(), objectsOnBoard.getRoot());
-	                            numberOfObjects++;
-	                            objectsOnBoard.setNumberOfObjects(numberOfObjects);
-	                        }
+                if (vehicle.isAlive())
+	            {
+                    objectsOnBoard.insertWall(vehicle.produceWall(), objectsOnBoard.getRoot());
+	                numberOfObjects++;
+	                objectsOnBoard.setNumberOfObjects(numberOfObjects);
+	            }
 			}
 			//System.out.println("done");
 		}
@@ -166,19 +151,4 @@ namespace Photon_Grid_Port.CS_Files
 	}
 }
 
-//Vehicle position
-class VehiclePos{
-	public int playerId;
-	public int direction;
-	public Position pos;
-	public Position prevPos;
-	public int radius;
-	VehiclePos(int pId, int newDirection, Position position, Position prevPosition)
-	{
-		playerId = pId;
-		direction = newDirection;
-		pos = position;
-		prevPos = prevPosition;
-	}
-}
 }
