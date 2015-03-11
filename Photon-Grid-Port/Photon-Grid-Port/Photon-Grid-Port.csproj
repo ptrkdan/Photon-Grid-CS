@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CS Files\Accelerometer.cs" />
     <Compile Include="CS Files\Board.cs" />
     <Compile Include="CS Files\Player.cs" />
     <Compile Include="CS Files\Position.cs" />
