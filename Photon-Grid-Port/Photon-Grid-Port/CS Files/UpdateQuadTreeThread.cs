@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Photon_Grid_Port.CS_Files
 {
-    public class UpdateQuadTree implements Runnable {
+ public class UpdateQuadTreeThread // : Runnable 
+ {
 
-    Board board;
+	Board board;
 	
-	UpdateQuadTree(Board gameBoard)
+	UpdateQuadTreeThread(Board gameBoard)
 	{
 		board = gameBoard;
 	}
@@ -31,33 +32,23 @@ namespace Photon_Grid_Port.CS_Files
 			//int aiChange = (int)(Math.random()*60 - 30);
 			//System.out.println("AI will change direction by " + aiChange + " degrees");
 			//Board.vehicleList.get(1).changeDirection(Board.vehicleList.get(1).getDirection() + aiChange); 
-			if(StateManager.c == StateManager.wallSpacing)
-			{
-
-				board.updateBoard(true);
-			}
-			else
-			{
-				board.updateBoard(false);
-			}
+			board.updateBoard(true);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		/*try {
-			Thread.sleep(500);
+		try {
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		}
 		System.out.println("Game is Over!");
 		//ConnectionThread connThread = new ConnectionThread(1);
 		//Thread conn = new Thread(connThread);
 		//conn.start();
 	}
-
-}
 
 }

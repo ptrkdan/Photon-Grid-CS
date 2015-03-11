@@ -15,15 +15,15 @@ namespace Photon_Grid_Port.CS_Files
         private sealed String name;
 
         //Constructor
-        Player()
+        public Player()
         {
             id = 0;
-            name = new String();
+            name = System.String.Empty;
             status = 0;
             score = 0;
         }
 
-        Player(int pId)
+        public Player(int pId)
         {
             id = pId;
             name = "testPlayer";

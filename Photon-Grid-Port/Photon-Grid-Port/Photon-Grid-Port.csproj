@@ -47,12 +47,10 @@
     <Compile Include="CS Files\Position.cs" />
     <Compile Include="CS Files\QuadTree.cs" />
     <Compile Include="CS Files\TreeNode.cs" />
-    <Compile Include="CS Files\UpadteQuadTreeThread.cs" />
+    <Compile Include="CS Files\UpdateQuadTreeThread.cs" />
     <Compile Include="CS Files\UpdateQuadTree.cs" />
     <Compile Include="CS Files\Vehicle.cs" />
-    <Compile Include="CS Files\VehicleList.cs" />
     <Compile Include="CS Files\Wall.cs" />
-    <Compile Include="CS Files\WallList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

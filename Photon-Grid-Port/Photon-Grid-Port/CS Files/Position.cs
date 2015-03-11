@@ -13,7 +13,7 @@ namespace Photon_Grid_Port.CS_Files
         public int x;
         public int y;
 
-        Position(int newX, int newY)
+        public Position(int newX, int newY)
         {
             x = newX;
             y = newY;
