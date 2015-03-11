@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 
 namespace Photon_Grid_Port.CS_Files
 {
@@ -28,7 +29,7 @@ public class QuadTree : ISerializable {
 		return "";
 	}
 */	
-	public boolean insertWall(Wall wall, TreeNode startNode)
+	public bool insertWall(Wall wall, TreeNode startNode)
 	
 	{
 		startNode = findNode(wall.getPosition(), startNode);
@@ -131,7 +132,7 @@ public class QuadTree : ISerializable {
 		
 	}
 
-	public boolean insertVehicle(VehiclePos vehicle, TreeNode startNode)
+	public bool insertVehicle(VehiclePos vehicle, TreeNode startNode)
 	{
 		//FIRST must remove vehicle's previous position from the QuadTree
 		
@@ -161,7 +162,7 @@ public class QuadTree : ISerializable {
                                             if(startNode.getIsWall() == true)  // we need to know if it's a vehicle collision or not
                                             {
                                             
-                                               System.out.println("Wall destroys playerrr!");
+                                               Debug.WriteLine("Wall destroys playerrr!");
                                               destroyVehicle(vehicle.playerId);
                                             }
                                             else
@@ -235,28 +236,23 @@ public class QuadTree : ISerializable {
 	{
 		// This method will remove the vehicle from the vehicle arraylist in the Board.java class
 		// This will also kill the player and remove his name from the alivePlayers arrayList
-		Iterator<Vehicle> it = Board.vehicleList.iterator();
-		Vehicle temp = null;
-		for(int i = 0; i < Board.vehicleList.size(); i++)
+		foreach(Vehicle  i in Board.vehicleList)
 		{
-			temp = it.next();
-			if(temp.equals(playerId))
+			if(i.equals(playerId))
 			{
-				System.out.println("Vehicle Removed"); // for debugging purposes
-				temp.destroyVehicle();
+				Debug.WriteLine("Vehicle Removed"); // for debugging purposes
+				i.destroyVehicle();
 				Board.numberOfObjects--;
 				numberOfObjects--;
 			}
 		}
-		Iterator<Player> it1 = Board.alivePlayers.iterator();
-		Player temp1 = null;
-		for(int i = 0; i < Board.alivePlayers.size(); i++)
+
+		foreach(Player i in Board.alivePlayers)
 		{
-			temp1 = it1.next();
-			if(temp1.equals(playerId))
+			if(i.equals(playerId))
 			{
-				System.out.println("Player Killed"); // for debugging purposes
-				Board.alivePlayers.remove(temp1);
+                Debug.WriteLine("Player Killed"); // for debugging purposes
+				Board.alivePlayers.Remove(i);
 			}
 		}
 	}
@@ -282,7 +278,7 @@ public class QuadTree : ISerializable {
 		}
 	}
 
-	public boolean emptyNode(TreeNode node)
+	public bool emptyNode(TreeNode node)
 	{
 		node.setDirection(0);
 		node.setIsWall(true);
@@ -296,7 +292,7 @@ public class QuadTree : ISerializable {
 	}
 	
 	
-	public boolean fillNodeWithWall(Wall wall, TreeNode node)// should MARK that node as full and as a wall
+	public bool fillNodeWithWall(Wall wall, TreeNode node)// should MARK that node as full and as a wall
 	{
 		
 		node.setDirection(wall.getDirection());
@@ -311,7 +307,7 @@ public class QuadTree : ISerializable {
 		return false;
 	}
 	
-	public boolean fillNodeWithVehicle(VehiclePos vehicle, TreeNode node)// should MARK that node as full and as a vehicle
+	public bool fillNodeWithVehicle(VehiclePos vehicle, TreeNode node)// should MARK that node as full and as a vehicle
 	{
 		node.setDirection(vehicle.direction);
 		node.setIsWall(false);
@@ -324,24 +320,24 @@ public class QuadTree : ISerializable {
 		return false;
 	}
 	
-	public boolean detectCollision2(VehiclePos vehicle, TreeNode node)
+	public bool detectCollision2(VehiclePos vehicle, TreeNode node)
 	{
 		// TODO the math and collision tolerance checks
-		double distance = Math.sqrt(Math.pow(node.getPosition().y-vehicle.pos.y,2)+Math.pow(node.getPosition().x-vehicle.pos.x,2));
+		double distance = Math.Sqrt(Math.Pow(node.getPosition().y-vehicle.pos.y,2)+Math.Pow(node.getPosition().x-vehicle.pos.x,2));
 		if(!(distance > (vehicle.radius+node.getRadius())))
                 {
-			System.out.println("COLLISION");
+			Debug.WriteLine("COLLISION");
 			return true;
 		}
             double x1,x2,x3,x4,y1,y2,y3,y4;
-            x1 = vehicle.pos.x-25*Math.cos(vehicle.direction);
-            x2 = vehicle.pos.x+25*Math.cos(vehicle.direction);
-            y1 = vehicle.pos.y-25*Math.sin(vehicle.direction);
-            y2 = vehicle.pos.y+25*Math.sin(vehicle.direction);
-            x3 = node.getPosition().x-25*Math.cos(node.getDirection());
-            x4 = node.getPosition().x+25*Math.cos(node.getDirection());
-            y3 = node.getPosition().y-25*Math.sin(node.getDirection());
-            y4 = node.getPosition().y+25*Math.sin(node.getDirection());
+            x1 = vehicle.pos.x-25*Math.Cos(vehicle.direction);
+            x2 = vehicle.pos.x+25*Math.Cos(vehicle.direction);
+            y1 = vehicle.pos.y-25*Math.Sin(vehicle.direction);
+            y2 = vehicle.pos.y+25*Math.Sin(vehicle.direction);
+            x3 = node.getPosition().x-25*Math.Cos(node.getDirection());
+            x4 = node.getPosition().x+25*Math.Cos(node.getDirection());
+            y3 = node.getPosition().y-25*Math.Sin(node.getDirection());
+            y4 = node.getPosition().y+25*Math.Sin(node.getDirection());
             if(((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4)) == 0 || ((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4)) == 0)
                 return false;
             double x = ((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
@@ -366,27 +362,27 @@ public class QuadTree : ISerializable {
             } else{
                 if(!(y3<=y&&y<=y4))  return false;
             }
-            System.out.println("COLLISION");
+            Debug.WriteLine("COLLISION");
             return true;
 	}
 	
-	public boolean detectCollision1(Wall wall, TreeNode node)
+	public bool detectCollision1(Wall wall, TreeNode node)
 	{
-		double distance = Math.sqrt(Math.pow(node.getPosition().y - wall.getPosition().y,2)+Math.pow(node.getPosition().x - wall.getPosition().x,2));
+		double distance = Math.Sqrt(Math.Pow(node.getPosition().y - wall.getPosition().y,2)+Math.Pow(node.getPosition().x - wall.getPosition().x,2));
 		if(!(distance > (wall.radius + node.getRadius()))){
 			
-			System.out.println("COLLISION");
+			Debug.WriteLine("COLLISION");
 			return true;
 		}
                 double x1,x2,x3,x4,y1,y2,y3,y4;
-                x1 = wall.getPosition().x-25*Math.cos(wall.getDirection());
-                x2 = wall.getPosition().x+25*Math.cos(wall.getDirection());
-                y1 = wall.getPosition().y-25*Math.sin(wall.getDirection());
-                y2 = wall.getPosition().y+25*Math.sin(wall.getDirection());
-                x3 = node.getPosition().x-25*Math.cos(node.getDirection());
-                x4 = node.getPosition().x+25*Math.cos(node.getDirection());
-                y3 = node.getPosition().y-25*Math.sin(node.getDirection());
-                y4 = node.getPosition().y+25*Math.sin(node.getDirection());
+                x1 = wall.getPosition().x-25*Math.Cos(wall.getDirection());
+                x2 = wall.getPosition().x+25*Math.Cos(wall.getDirection());
+                y1 = wall.getPosition().y-25*Math.Sin(wall.getDirection());
+                y2 = wall.getPosition().y+25*Math.Sin(wall.getDirection());
+                x3 = node.getPosition().x-25*Math.Cos(node.getDirection());
+                x4 = node.getPosition().x+25*Math.Cos(node.getDirection());
+                y3 = node.getPosition().y-25*Math.Sin(node.getDirection());
+                y4 = node.getPosition().y+25*Math.Sin(node.getDirection());
                 if(((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4)) == 0 || ((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4)) == 0)
                 return false;
                 double x = ((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
@@ -411,7 +407,7 @@ public class QuadTree : ISerializable {
                 } else{
                     if(!(y3<=y&&y<=y4))  return false;
                 }
-                System.out.println("COLLISION");
+                Debug.WriteLine("COLLISION");
                 return true;
 	}
 	
@@ -492,7 +488,7 @@ public class QuadTree : ISerializable {
 		}
 		else{
 			if(node.isEmpty == false){
-				System.out.println("("+node.getPosition().x+","+node.getPosition().y+")");
+                Debug.WriteLine("(" + node.getPosition().x + "," + node.getPosition().y + ")");
 			}
 		}
 	}
