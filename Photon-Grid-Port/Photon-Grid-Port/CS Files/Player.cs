@@ -9,10 +9,10 @@ namespace Photon_Grid_Port.CS_Files
     public class Player
     {
 
-        private sealed int id;
+        private readonly int id;
         private int status;
         private int score;
-        private sealed String name;
+        private readonly String name;
 
         //Constructor
         public Player()

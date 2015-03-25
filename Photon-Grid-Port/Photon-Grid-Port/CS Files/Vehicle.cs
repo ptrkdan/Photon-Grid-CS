@@ -8,9 +8,9 @@ namespace Photon_Grid_Port.CS_Files
         private Position position;
         private Position prevPosition;
 
-        private sealed int playerId;
-        private sealed int length;
-        private sealed int width;
+        private readonly int playerId;
+        private readonly int length;
+        private readonly int width;
         private int boostCooldown;
         private int radius;
         private bool destroyed;

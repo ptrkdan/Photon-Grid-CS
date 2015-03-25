@@ -2,12 +2,12 @@
 {
     public class Wall
     {
-        private sealed int playerId;
-        private sealed Position position;
-        private sealed int direction;
-        private sealed int length;
-        private sealed int width;
-        public sealed int radius;
+        private readonly int playerId;
+        private readonly Position position;
+        private readonly int direction;
+        private readonly int length;
+        private readonly int width;
+        public readonly int radius;
 
         public Wall(int newPlayerId, Position newPosition, int newDirection, int newLength, int newWidth)
         {
