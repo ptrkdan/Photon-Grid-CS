@@ -131,7 +131,12 @@ public class QuadTree : ISerializable {
 		parent.isEmpty = startNode.isEmpty;		
 		
 	}
-
+    /// <summary>
+    /// Let's update the QuadTree data structure with our new vehicle data.
+    /// </summary>
+    /// <param name="vehicle"></param>
+    /// <param name="startNode"></param>
+    /// <returns></returns>
 	public bool insertVehicle(VehiclePos vehicle, TreeNode startNode)
 	{
 		//FIRST must remove vehicle's previous position from the QuadTree

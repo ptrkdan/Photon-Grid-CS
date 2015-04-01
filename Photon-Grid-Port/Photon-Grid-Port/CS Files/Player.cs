@@ -13,6 +13,9 @@ namespace Photon_Grid_Port.CS_Files
         private int status;
         private int score;
         private readonly String name;
+        private bool isConnected;
+        private bool isAlive;
+        private Vehicle vehicle;
 
         //Constructor
         public Player()
@@ -21,14 +24,20 @@ namespace Photon_Grid_Port.CS_Files
             name = System.String.Empty;
             status = 0;
             score = 0;
+            isConnected = false;
+            isAlive = false;
+            vehicle = null;
         }
 
-        public Player(int pId)
+        public Player(int pId, Vehicle newVehicle)
         {
             id = pId;
             name = "testPlayer";
             status = 0;
             score = 0;
+            isConnected = true;
+            isAlive = true;
+            vehicle = newVehicle;
         }
 
 
@@ -71,6 +80,21 @@ namespace Photon_Grid_Port.CS_Files
         void setScore(int newScore)
         {
 
+        }
+
+        public bool getIsConnected()
+        {
+            return isConnected;
+        }
+
+        public bool getIsAlive()
+        {
+            return isAlive;
+        }
+
+        public Vehicle getVehicle()
+        {
+            return Vehicle;
         }
     }
 }
